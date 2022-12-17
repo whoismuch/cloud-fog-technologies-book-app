@@ -14,8 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "stress_type", schema = "public")
-public class StressType {
+@Table(name = "category", schema = "public")
+public class Category {
 
     @Id
     @GeneratedValue
@@ -24,5 +24,4 @@ public class StressType {
     @NotBlank
     @Column(name = "name")
     private String name;
-
 }

@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${POSTGRES_USER:postgres1}
+    url: ${POSTGRES_URL:jdbc:postgresql://cloud_postgres:5432/book-app}
+    password: ${POSTGRES_PASSWORD:postgres1}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+  main:
+    allow-circular-references: true
+server:
+  error:
+    include-message: always
+    include-binding-errors: always

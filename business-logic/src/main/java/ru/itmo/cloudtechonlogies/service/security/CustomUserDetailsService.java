@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import ru.itmo.highloadsystems.model.User;
-import ru.itmo.highloadsystems.service.UserService;
+import ru.itmo.cloudtechonlogies.model.User;
+import ru.itmo.cloudtechonlogies.service.UserService;
 
 @Component
 @RequiredArgsConstructor

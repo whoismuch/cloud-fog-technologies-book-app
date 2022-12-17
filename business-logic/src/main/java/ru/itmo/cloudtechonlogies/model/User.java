@@ -41,20 +41,20 @@ public class User {
     @Column(name = "surname")
     private String surname;
 
-    @NotBlank
-    @Size(min = 10, max = 12)
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-
     @Past
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
+    @NotBlank
+    @Email
+    @Size(min = 5, max = 50)
+    @Column(unique = true)
+    private String email;
+
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    @JoinColumn(name = "id_role", referencedColumnName = "id")
     private Role role;
 }

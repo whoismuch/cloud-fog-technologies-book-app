@@ -3,7 +3,7 @@ package ru.itmo.cloudtechonlogies.service.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.itmo.highloadsystems.model.User;
+import ru.itmo.cloudtechonlogies.model.User;
 
 import java.util.Collection;
 import java.util.Collections;

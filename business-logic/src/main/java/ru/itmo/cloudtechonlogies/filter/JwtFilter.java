@@ -6,8 +6,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
-import ru.itmo.highloadsystems.service.security.CustomUserDetails;
-import ru.itmo.highloadsystems.service.security.CustomUserDetailsService;
+import ru.itmo.cloudtechonlogies.service.security.CustomUserDetails;
+import ru.itmo.cloudtechonlogies.service.security.CustomUserDetailsService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -23,7 +23,6 @@ import static org.springframework.util.StringUtils.hasText;
 public class JwtFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION = "Authorization";
-//хуй знает почему но если я имеено в этом классе заменю autowired на final он зацикливается
     @Autowired
     private JwtProvider jwtProvider;
 

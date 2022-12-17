@@ -28,8 +28,8 @@ public class UserDTORequest {
     private String surname;
 
     @NotBlank(message = "cannot be null")
-    @Size(min = 10, max = 12, message = "must be between 10 and 12 characters")
-    private String phoneNumber;
+    @Size(min = 8, max = 320, message = "must be between 8 and 320 characters")
+    private String email;
 
     @NotBlank(message = "cannot be null, empty")
     private Date dateOfBirth;

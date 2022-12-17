@@ -6,11 +6,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.itmo.highloadsystems.dto.AuthDTORequest;
-import ru.itmo.highloadsystems.dto.UserDTORequest;
-import ru.itmo.highloadsystems.filter.JwtProvider;
-import ru.itmo.highloadsystems.model.User;
-import ru.itmo.highloadsystems.service.UserService;
+import ru.itmo.cloudtechonlogies.dto.AuthDTORequest;
+import ru.itmo.cloudtechonlogies.dto.UserDTORequest;
+import ru.itmo.cloudtechonlogies.filter.JwtProvider;
+import ru.itmo.cloudtechonlogies.model.User;
+import ru.itmo.cloudtechonlogies.service.UserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;

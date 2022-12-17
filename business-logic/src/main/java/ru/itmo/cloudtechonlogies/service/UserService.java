@@ -1,18 +1,19 @@
 package ru.itmo.cloudtechonlogies.service;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.itmo.highloadsystems.dto.UserDTORequest;
-import ru.itmo.highloadsystems.exception.ExistElementException;
-import ru.itmo.highloadsystems.exception.NoMatchException;
-import ru.itmo.highloadsystems.exception.NotFoundElementException;
-import ru.itmo.highloadsystems.model.User;
-import ru.itmo.highloadsystems.repository.UserRepository;
-import ru.itmo.highloadsystems.service.security.RoleService;
+import ru.itmo.cloudtechonlogies.exception.NoMatchException;
+import ru.itmo.cloudtechonlogies.model.User;
+import ru.itmo.cloudtechonlogies.repository.UserRepository;
+import ru.itmo.cloudtechonlogies.service.security.RoleService;
+import ru.itmo.cloudtechonlogies.dto.UserDTORequest;
+import ru.itmo.cloudtechonlogies.exception.ExistElementException;
+import ru.itmo.cloudtechonlogies.exception.NotFoundElementException;
 
 import java.util.UUID;
 
@@ -38,7 +39,7 @@ public class UserService {
         User u = new User();
         u.setLogin(userDTORequest.getLogin());
         u.setDateOfBirth(userDTORequest.getDateOfBirth());
-        u.setPhoneNumber(userDTORequest.getPhoneNumber());
+        u.setEmail(userDTORequest.getEmail());
         u.setSurname(userDTORequest.getSurname());
         u.setName(userDTORequest.getName());
         u.setRole(roleService.getRole(userDTORequest.getRole()));
