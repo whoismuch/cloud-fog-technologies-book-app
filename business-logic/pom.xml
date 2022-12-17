@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ru.itmo</groupId>
-    <artifactId>HighLoadSystems</artifactId>
+    <artifactId>cloud-technologies</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>HighLoadSystems</name>
-    <description>HighLoadSystems</description>
+    <name>cloud-technologie</name>
+    <description>book-app</description>
     <properties>
         <java.version>17</java.version>
     </properties>
