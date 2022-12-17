@@ -11,6 +11,9 @@ public class CategoryBookId implements Serializable {
     private Category category;
     private Book book;
 
+    public CategoryBookId() {
+    }
+
     public CategoryBookId(Category category, Book book) {
         this.category = category;
         this.book = book;

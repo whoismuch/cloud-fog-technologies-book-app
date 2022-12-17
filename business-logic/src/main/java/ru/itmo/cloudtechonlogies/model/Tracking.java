@@ -32,12 +32,12 @@ public class Tracking {
     private Book book;
 
     @NotNull
-    @Min(value = 0)
+    @Min(value = 1)
     @Column(name = "page")
     private Integer page;
 
     @NotNull
-    @Min(value = 0)
+    @Min(value = 1)
     @Column(name = "timer")
     private Integer timer;
 

@@ -12,6 +12,9 @@ public class TrackingId implements Serializable {
     private Book book;
     private User user;
 
+    public TrackingId() {
+    }
+
     public TrackingId(Book book, User user) {
         this.book = book;
         this.user = user;
