@@ -13,6 +13,8 @@ import ru.itmo.cloudtechonlogies.repository.BookRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +40,10 @@ public class BookService {
         List<Book> books = trackingService.getAllByUser(user).stream().map(Tracking::getBook).toList();
         List<CategoryBook> categoryBooks = books.stream().map(categoryBookService::getByBook).toList();
         return categoryBooks;
+    }
+
+    public Optional<Book> getById(UUID id){
+       return bookRepository.findById(id);
     }
 
 }
