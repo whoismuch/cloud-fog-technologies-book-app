@@ -40,7 +40,7 @@ public class Tracking {
     @NotNull
     @Min(value = 1)
     @Column(name = "timer")
-    private Long timer;
+    private Integer timer;
 
 
 }

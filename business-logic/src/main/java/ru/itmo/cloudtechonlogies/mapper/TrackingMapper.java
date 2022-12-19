@@ -28,4 +28,13 @@ public class TrackingMapper {
                 .build();
     }
 
+    public Tracking mapPageTimerDTOToEntity(PageTimerDTO pageTimerDTO) {
+        Tracking tracking = Tracking.builder()
+                .page(pageTimerDTO.getPage())
+                .timer(pageTimerDTO.getTimer())
+                .build();
+        return tracking;
+    }
+
+
 }

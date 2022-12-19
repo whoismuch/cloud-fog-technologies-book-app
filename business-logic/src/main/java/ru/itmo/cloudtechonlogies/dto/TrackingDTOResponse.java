@@ -1,6 +1,7 @@
 package ru.itmo.cloudtechonlogies.dto;
 
 import lombok.Builder;
+import org.springframework.data.relational.core.sql.In;
 
 import java.util.UUID;
 
@@ -9,6 +10,6 @@ public class TrackingDTOResponse {
     private UUID userId;
     private UUID bookId;
     private Integer page;
-    private Long timer;
+    private Integer timer;
 
 }

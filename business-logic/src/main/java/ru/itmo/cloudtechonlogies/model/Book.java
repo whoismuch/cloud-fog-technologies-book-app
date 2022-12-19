@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.UUID;
 
@@ -37,5 +39,15 @@ public class Book {
     @NotBlank
     @Column(name = "text_path")
     private String textPath;
+
+    @NotNull
+    @Min(value = 1)
+    @Column(name = "page_count")
+    private Integer pageCount;
+
+    @NotNull
+    @Min(value = 1)
+    @Column(name = "audio_length")
+    private Integer audioLength;
 
 }

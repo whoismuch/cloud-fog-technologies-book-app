@@ -7,5 +7,5 @@ import lombok.Data;
 @Builder
 public class PageTimerDTO {
     private Integer page;
-    private Long timer;
+    private Integer timer;
 }
