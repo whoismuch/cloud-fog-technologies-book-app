@@ -18,13 +18,23 @@ import java.util.UUID;
 public class TrackingService {
 
     private final TrackingRepository trackingRepository;
-
     public List<Tracking> getAllByUser(User user) {
         return trackingRepository.getTrackingsByUser(user);
     }
     public Tracking getTrackingByUserAndBook(User user, Book book) {
         return trackingRepository.getTrackingByUserAndBook(user, book)
                 .orElseThrow(() -> new NotFoundException("User isn't reading that book"));
+    }
+
+    public Tracking addBook(User user, Book book) {
+        Tracking tracking = Tracking.builder()
+                .user(user)
+                .book(book)
+                .page(1)
+                .timer(1L)
+                .build();
+
+        return trackingRepository.save(tracking);
     }
 
 }

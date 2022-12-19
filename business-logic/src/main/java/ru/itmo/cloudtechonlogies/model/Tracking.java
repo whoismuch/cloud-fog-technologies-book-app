@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.itmo.cloudtechonlogies.model.key.TrackingId;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -16,16 +16,17 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Entity
 @Table(name = "tracking", schema = "public")
-@IdClass(TrackingId.class)
 public class Tracking {
 
     @Id
+    @GeneratedValue
+    private UUID id;
+
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", referencedColumnName = "id")
     private User user;
 
-    @Id
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_book", referencedColumnName = "id")

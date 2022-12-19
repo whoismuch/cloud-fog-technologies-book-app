@@ -48,4 +48,6 @@ public class BookController {
         List<CategoryBookDTO> dtoList = bookService.getAllWithCategoryByUser(user).stream().map(categoryBookMapper::mapEntityToDto).toList();
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
+
+
 }

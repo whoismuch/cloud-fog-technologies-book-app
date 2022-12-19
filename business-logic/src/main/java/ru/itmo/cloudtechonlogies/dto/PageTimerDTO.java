@@ -1,14 +1,11 @@
 package ru.itmo.cloudtechonlogies.dto;
 
 import lombok.Builder;
+import lombok.Data;
 
-import java.util.UUID;
-
+@Data
 @Builder
-public class TrackingDTOResponse {
-    private UUID userId;
-    private UUID bookId;
+public class PageTimerDTO {
     private Integer page;
     private Long timer;
-
 }
