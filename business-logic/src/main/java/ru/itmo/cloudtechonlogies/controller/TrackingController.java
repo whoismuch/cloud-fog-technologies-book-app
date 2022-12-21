@@ -10,6 +10,7 @@ import ru.itmo.cloudtechonlogies.mapper.TrackingMapper;
 import ru.itmo.cloudtechonlogies.model.Tracking;
 import ru.itmo.cloudtechonlogies.model.User;
 import ru.itmo.cloudtechonlogies.service.BookService;
+import ru.itmo.cloudtechonlogies.service.SmtpService;
 import ru.itmo.cloudtechonlogies.service.TrackingService;
 import ru.itmo.cloudtechonlogies.service.UserService;
 
@@ -24,6 +25,7 @@ public class TrackingController {
     private final TrackingService trackingService;
     private final TrackingMapper trackingMapper;
     private final UserService userService;
+    private final SmtpService smtpService;
 
     private final BookService bookService;
 
@@ -43,6 +45,8 @@ public class TrackingController {
         PageTimerDTO dtoResponse = trackingMapper
                 .mapEntityToPageTimerDTO(trackingService.createTracking(user,bookService.getById(bookId)
                         .orElseThrow(() -> new NotFoundElementException("This book doesn't exist"))));
+
+        smtpService.sendMessage()
         return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
     }
 
