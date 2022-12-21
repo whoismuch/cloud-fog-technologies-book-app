@@ -1,10 +1,12 @@
 package ru.itmo;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class SmtpApp {
-    private static final Sender sender = new Sender("v.lisitsina@gmail.com", "ykabadueqlizbssj");
 
-    public static void main(String[] args){
-        sender.send("v.lisitsina@gmail.com", "aa", "aa");
+    public static void main(String[] args) {
+        SpringApplication.run(SmtpApp.class, args);
     }
 }
