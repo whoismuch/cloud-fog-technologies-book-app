@@ -1,21 +1,23 @@
 package ru.itmo;
 
+import org.springframework.stereotype.Component;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-
+@Component
 public class Sender {
-    private final String senderEmailID;
-    private final String senderPassword;
+
+    private final String senderEmailID = "janebrlee@gmail.com";
+    private final String senderPassword = "bxiyxsnkaekafrll";
+
     private final String emailSMTPserver = "smtp.gmail.com";
     private final String emailServerPort = "465";
     private final Properties props;
 
-    public Sender(String senderEmail, String senderPassword) {
-        this.senderPassword = senderPassword;
-        this.senderEmailID = senderEmail;
+    public Sender() {
         props = new Properties();
         props.put("mail.smtp.user", this.senderEmailID);
         props.put("mail.smtp.host", this.emailSMTPserver);
