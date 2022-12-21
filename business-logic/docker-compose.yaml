@@ -11,6 +11,8 @@ services:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
       POSTGRES_DB: $POSTGRES_DB
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
     ports:
       - 5437:5432
     healthcheck:
@@ -20,7 +22,7 @@ services:
       retries: 5
 
   app:
-    container_name: spring_boot_simple_persistence
+    container_name: business-logic
     build:
       context: .
     ports:
@@ -30,13 +32,3 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:rw
     depends_on:
       - cloud_postgres
-
-  socat-docker:
-    image: binlab/socat
-    container_name: socat-docker
-    hostname: socat-docker
-    restart: always
-    user: root
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:rw
-    network_mode: host
