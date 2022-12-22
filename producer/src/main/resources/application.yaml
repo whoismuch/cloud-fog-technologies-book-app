@@ -1,0 +1,9 @@
+spring:
+  main:
+    allow-circular-references: true
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+  port:
+    8067

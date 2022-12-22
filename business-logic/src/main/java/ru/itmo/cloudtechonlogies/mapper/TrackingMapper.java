@@ -3,7 +3,7 @@ package ru.itmo.cloudtechonlogies.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.itmo.cloudtechonlogies.dto.PageTimerDTO;
-import ru.itmo.cloudtechonlogies.dto.TrackingDTOResponse;
+import ru.itmo.cloudtechonlogies.dto.TrackingDTO;
 import ru.itmo.cloudtechonlogies.model.Tracking;
 
 @RequiredArgsConstructor
@@ -19,8 +19,8 @@ public class TrackingMapper {
         return dtoResponse;
     }
 
-    public TrackingDTOResponse mapEntityToDTO(Tracking tracking) {
-        return TrackingDTOResponse.builder()
+    public TrackingDTO mapEntityToDTO(Tracking tracking) {
+        return TrackingDTO.builder()
                 .userId(tracking.getUser().getId())
                 .bookId(tracking.getBook().getId())
                 .page(tracking.getPage())

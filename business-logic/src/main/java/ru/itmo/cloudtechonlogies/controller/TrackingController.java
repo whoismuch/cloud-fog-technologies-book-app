@@ -45,8 +45,6 @@ public class TrackingController {
         PageTimerDTO dtoResponse = trackingMapper
                 .mapEntityToPageTimerDTO(trackingService.createTracking(user,bookService.getById(bookId)
                         .orElseThrow(() -> new NotFoundElementException("This book doesn't exist"))));
-
-        smtpService.sendMessage()
         return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
     }
 
