@@ -1,40 +1,34 @@
 package ru.itmo.cloudtechonlogies.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.classic.methods.HttpPost;
+import com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.impl.classic.HttpClients;
+import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.io.entity.StringEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.BodyInserter;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 import ru.itmo.cloudtechonlogies.dto.BodyMessageDTO;
 
-import java.time.Duration;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 
 @Service
 @RequiredArgsConstructor
 public class SmtpService {
-    private static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(10);
 
-    private final WebClient localApiClient;
+    public CloseableHttpResponse callAPISmtpSrvice(BodyMessageDTO bodyMessageDTO) throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException, IOException, IOException {
+        CloseableHttpClient client = HttpClients.createDefault();
 
-    public String sendMessage(BodyMessageDTO bodyMessageDTO) {
-        return localApiClient
-                .post()
-                .uri("http://localhost:8082/smtp/send")
-                .bodyValue(BodyInserters.fromValue(bodyMessageDTO))
-                .exchange()
-                .flatMap(clientResponse -> {
-                    if (clientResponse.statusCode().is5xxServerError()) {
-                        clientResponse.body((clientHttpResponse, context) -> {
-                            return clientHttpResponse.getBody();
-                        });
-                        return clientResponse.bodyToMono(String.class);
-                    }
-                    else
-                        return clientResponse.bodyToMono(String.class);
-                })
-                .block();
+        ObjectMapper mapper = new ObjectMapper();
+        HttpPost httpPost = new HttpPost("http://localhost:8082/smtp/send");
+
+        httpPost.setHeader("Content-type", "application/json");
+        httpPost.setEntity(new StringEntity( mapper.writeValueAsString(bodyMessageDTO)));
+
+        return client.execute(httpPost);
     }
 
 }

@@ -53,13 +53,12 @@ public class UserController {
             @RequestParam(defaultValue = "5") @Max(value = 50, message = "should be less 50") int size
     ) {
         try {
-
             Page<User> userPage = userService.findAll(page, size);
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set("totalElements", String.valueOf(userPage.getTotalElements()));
             responseHeaders.set("totalPage", String.valueOf(userPage.getTotalPages()));
             return new ResponseEntity<>(userPage.getContent(), responseHeaders, HttpStatus.OK);
-        }catch (Throwable e){
+        } catch (Throwable e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
     }
