@@ -39,7 +39,6 @@ public class UserController {
     public ResponseEntity<?> auth(@Valid @RequestBody AuthDTORequest request) {
         User userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
         String token = jwtProvider.generateToken(userEntity.getLogin());
-        trackingMessageListenerService.initConsumer();
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
@@ -64,5 +63,11 @@ public class UserController {
         } catch (Throwable e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
+    }
+
+    @GetMapping("/track")
+    public ResponseEntity<?> track() {
+        trackingMessageListenerService.initConsumer();
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 }
