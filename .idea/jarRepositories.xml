@@ -42,6 +42,11 @@
       <option name="url" value="http://repolib-main.diasoft.ru:8081/repository/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="maven-base-repo" />
+      <option name="name" value="maven-base-repo" />
+      <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="diasoft_snapshots" />
       <option name="name" value="diasoft_snapshots" />
       <option name="url" value="http://repolib-main.diasoft.ru:8081/repository/snapshots/" />

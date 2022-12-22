@@ -15,5 +15,6 @@ import java.util.UUID;
 public interface TrackingRepository extends JpaRepository<Tracking, UUID> {
 
     Optional<Tracking> getTrackingByUserAndBook(User user, Book book);
+
     List<Tracking> getTrackingsByUser(User user);
 }

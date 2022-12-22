@@ -19,12 +19,4 @@ public class CategoryBookService {
     public CategoryBook getByBook(Book book) {
         return categoryBookRepository.getCategoryBookByBook(book).orElse(null);
     }
-
-
-
-
-
-
-
-
 }
