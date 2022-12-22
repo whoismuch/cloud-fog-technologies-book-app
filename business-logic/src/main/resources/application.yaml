@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     username: ${POSTGRES_USER:postgres1}
-    url: ${POSTGRES_URL:jdbc:postgresql://cloud_postgres:5432/book-app}
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5452/book-app}
     password: ${POSTGRES_PASSWORD:postgres1}
   jpa:
     open-in-view: false
@@ -11,6 +11,8 @@ spring:
   main:
     allow-circular-references: true
 server:
+  port:
+    8080
   error:
     include-message: always
     include-binding-errors: always

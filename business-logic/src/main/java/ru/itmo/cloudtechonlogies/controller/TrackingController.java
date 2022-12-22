@@ -4,16 +4,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.itmo.cloudtechonlogies.dto.EmailMessageDTO;
 import ru.itmo.cloudtechonlogies.dto.PageTimerDTO;
+import ru.itmo.cloudtechonlogies.exception.ExistElementException;
 import ru.itmo.cloudtechonlogies.exception.NotFoundElementException;
 import ru.itmo.cloudtechonlogies.mapper.TrackingMapper;
+import ru.itmo.cloudtechonlogies.model.Book;
 import ru.itmo.cloudtechonlogies.model.Tracking;
 import ru.itmo.cloudtechonlogies.model.User;
-import ru.itmo.cloudtechonlogies.service.BookService;
-import ru.itmo.cloudtechonlogies.service.SmtpService;
-import ru.itmo.cloudtechonlogies.service.TrackingService;
-import ru.itmo.cloudtechonlogies.service.UserService;
+import ru.itmo.cloudtechonlogies.service.*;
+import ru.itmo.cloudtechonlogies.service.client.SmtpClient;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.util.UUID;
 
@@ -25,7 +30,8 @@ public class TrackingController {
     private final TrackingService trackingService;
     private final TrackingMapper trackingMapper;
     private final UserService userService;
-    private final SmtpService smtpService;
+    private final SmtpClient smtpClient;
+    private final CategoryBookService categoryBookService;
 
     private final BookService bookService;
 
@@ -34,19 +40,32 @@ public class TrackingController {
         User user = userService.findByLogin(principal.getName());
         PageTimerDTO dtoResponse = trackingMapper
                 .mapEntityToPageTimerDTO(trackingService.getTrackingByUserAndBook(user, bookService.getById(bookId)
-                        .orElseThrow(() -> new NotFoundElementException("This book doesn't exist")))
-                        .orElseThrow( () -> new NotFoundElementException("There is no tracking for this user and book")));
+                                .orElseThrow(() -> new NotFoundElementException("This book doesn't exist")))
+                        .orElseThrow(() -> new NotFoundElementException("There is no tracking for this user and book")));
         return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
     }
 
     @PostMapping("/{bookId}")
-    public ResponseEntity<PageTimerDTO> createTracking(Principal principal, @PathVariable UUID bookId) {
+    public ResponseEntity<PageTimerDTO> createTracking(Principal principal, @PathVariable UUID bookId) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         User user = userService.findByLogin(principal.getName());
+        Book book = bookService.getById(bookId)
+                .orElseThrow(() -> new NotFoundElementException("This book doesn't exist"));
+        if (trackingService.getTrackingByUserAndBook(user, book).isPresent()) {
+            throw new ExistElementException("Tracking already exist");
+        }
         PageTimerDTO dtoResponse = trackingMapper
-                .mapEntityToPageTimerDTO(trackingService.createTracking(user,bookService.getById(bookId)
-                        .orElseThrow(() -> new NotFoundElementException("This book doesn't exist"))));
+                .mapEntityToPageTimerDTO(trackingService.createTracking(user, book));
 
-        smtpService.sendMessage()
+        EmailMessageDTO dto = new EmailMessageDTO();
+
+        String bookCategory = categoryBookService.getByBook(book).getCategory().getName();
+        Book recommendBook = bookService.getBookByCategory(bookCategory, bookId);
+        if (recommendBook != null) {
+            dto.setMessage("You added new book from category - " + bookCategory + ". \nFrom the same category, you may like the book:  " + recommendBook.getName() + ", " + recommendBook.getAuthor());
+            dto.setReceiver(user.getEmail());
+            dto.setSubject("Recommended");
+            smtpClient.callAPISmtpService("http://84.252.140.76:8066/smtp/send", dto);
+        }
         return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
     }
 
@@ -59,6 +78,4 @@ public class TrackingController {
                         .orElseThrow(() -> new NotFoundElementException("This book doesn't exist"))));
         return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
     }
-
-
 }

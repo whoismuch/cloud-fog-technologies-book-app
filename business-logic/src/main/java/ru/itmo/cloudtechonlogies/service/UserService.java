@@ -1,6 +1,5 @@
 package ru.itmo.cloudtechonlogies.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

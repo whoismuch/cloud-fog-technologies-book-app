@@ -11,6 +11,7 @@ import ru.itmo.cloudtechonlogies.dto.UserDTORequest;
 import ru.itmo.cloudtechonlogies.filter.JwtProvider;
 import ru.itmo.cloudtechonlogies.model.User;
 import ru.itmo.cloudtechonlogies.service.UserService;
+import ru.itmo.cloudtechonlogies.service.listener.TrackingMessageListenerService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -24,6 +25,8 @@ public class UserController {
 
     private final UserService userService;
 
+    private final TrackingMessageListenerService trackingMessageListenerService;
+
     private final JwtProvider jwtProvider;
 
     @PostMapping("/register")
@@ -34,9 +37,9 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> auth(@Valid @RequestBody AuthDTORequest request) {
-
         User userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
         String token = jwtProvider.generateToken(userEntity.getLogin());
+        trackingMessageListenerService.initConsumer();
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
@@ -53,13 +56,12 @@ public class UserController {
             @RequestParam(defaultValue = "5") @Max(value = 50, message = "should be less 50") int size
     ) {
         try {
-
             Page<User> userPage = userService.findAll(page, size);
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set("totalElements", String.valueOf(userPage.getTotalElements()));
             responseHeaders.set("totalPage", String.valueOf(userPage.getTotalPages()));
             return new ResponseEntity<>(userPage.getContent(), responseHeaders, HttpStatus.OK);
-        }catch (Throwable e){
+        } catch (Throwable e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
     }

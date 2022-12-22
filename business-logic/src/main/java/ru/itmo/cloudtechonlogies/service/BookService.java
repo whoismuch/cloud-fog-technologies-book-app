@@ -11,11 +11,9 @@ import ru.itmo.cloudtechonlogies.model.Tracking;
 import ru.itmo.cloudtechonlogies.model.User;
 import ru.itmo.cloudtechonlogies.repository.BookRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,24 +24,26 @@ public class BookService {
     private final CategoryBookService categoryBookService;
     private final TrackingService trackingService;
 
-    public Page<Book> findAll(int page, int size){
+    public Page<Book> findAll(int page, int size) {
         return bookRepository.findAll(PageRequest.of(page, size));
     }
 
-    public Page<CategoryBook> getAllWithCategory(int page, int size){
+    public Page<CategoryBook> getAllWithCategory(int page, int size) {
         List<Book> books = findAll(page, size).getContent();
         List<CategoryBook> categoryBooks = books.stream().map(categoryBookService::getByBook).toList();
         return new PageImpl<>(categoryBooks, PageRequest.of(page, size), categoryBooks.size());
     }
 
-    public List<CategoryBook> getAllWithCategoryByUser(User user){
+    public List<CategoryBook> getAllWithCategoryByUser(User user) {
         List<Book> books = trackingService.getAllByUser(user).stream().map(Tracking::getBook).toList();
-        List<CategoryBook> categoryBooks = books.stream().map(categoryBookService::getByBook).toList();
-        return categoryBooks;
+        return books.stream().map(categoryBookService::getByBook).toList();
     }
 
-    public Optional<Book> getById(UUID id){
-       return bookRepository.findById(id);
+    public Optional<Book> getById(UUID id) {
+        return bookRepository.findById(id);
     }
 
+    public Book getBookByCategory(String category, UUID hasAlreadyBook) {
+        return bookRepository.findBookByCategory(category, hasAlreadyBook).orElse(null);
+    }
 }
