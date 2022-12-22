@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.itmo.cloudtechonlogies.dto.AuthDTORequest;
 import ru.itmo.cloudtechonlogies.dto.UserDTORequest;
 import ru.itmo.cloudtechonlogies.filter.JwtProvider;
+import ru.itmo.cloudtechonlogies.listener.Util;
 import ru.itmo.cloudtechonlogies.model.User;
 import ru.itmo.cloudtechonlogies.service.UserService;
 import ru.itmo.cloudtechonlogies.service.listener.TrackingMessageListenerService;
@@ -39,7 +40,6 @@ public class UserController {
     public ResponseEntity<?> auth(@Valid @RequestBody AuthDTORequest request) {
         User userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
         String token = jwtProvider.generateToken(userEntity.getLogin());
-        trackingMessageListenerService.initConsumer();
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 

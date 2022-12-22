@@ -34,6 +34,10 @@ public class TrackingService {
         return trackingRepository.save(tracking);
     }
 
+    public Tracking createTracking(Tracking tracking) {
+        return trackingRepository.save(tracking);
+    }
+
     public Tracking updateTracking(Tracking tracking, User user, Book book) {
         Optional<Tracking> oldTracking = getTrackingByUserAndBook(user, book);
         if (oldTracking.isEmpty()) throw new NotFoundElementException("There is no tracking for this user and book");
@@ -47,5 +51,22 @@ public class TrackingService {
         }
         return trackingRepository.save(oldTracking.get());
     }
+
+    public Tracking updateTracking(Tracking tracking) {
+        Optional<Tracking> oldTracking = getTrackingByUserAndBook(tracking.getUser(), tracking.getBook());
+        if (oldTracking.isEmpty()) throw new NotFoundElementException("There is no tracking for this user and book");
+        if (tracking.getPage() != null) {
+            oldTracking.get().setPage(tracking.getPage());
+            oldTracking.get().setTimer(tracking.getBook().getAudioLength() * tracking.getPage()/tracking.getBook().getPageCount());
+        }
+        else if (tracking.getTimer() != null) {
+            oldTracking.get().setTimer(tracking.getTimer());
+            oldTracking.get().setPage(tracking.getBook().getPageCount() * tracking.getTimer()/tracking.getBook().getAudioLength());
+        }
+        return trackingRepository.save(oldTracking.get());
+    }
+
+
+
 
 }

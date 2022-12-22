@@ -1,22 +1,28 @@
 package ru.itmo.cloudtechonlogies.listener;
 
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import ru.itmo.cloudtechonlogies.service.listener.TrackingMessageListenerService;
 
+import javax.annotation.PostConstruct;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.jms.TextMessage;
 
 @Component
-public class TrackingMessageListener implements MessageListener {
+public class TrackingMessageListener {
+    private final Util util;
 
-    @Override
-    public void onMessage(Message message) {
-        try {
-            System.out.println(message.getBody(String.class));
-        } catch (JMSException e) {
-            throw new RuntimeException(e);
-        }
+    public TrackingMessageListener(Util util) {
+        this.util = util;
+        onMessage();
+    }
+
+    public void onMessage() {
+        util.run();
     }
 }

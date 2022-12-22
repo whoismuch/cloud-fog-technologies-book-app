@@ -8,18 +8,27 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.itmo.cloudtechonlogies.dto.TrackingDTO;
 import ru.itmo.cloudtechonlogies.listener.TrackingMessageListener;
+import ru.itmo.cloudtechonlogies.mapper.TrackingMapper;
+import ru.itmo.cloudtechonlogies.service.TrackingService;
 
 import javax.jms.*;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
 public class TrackingMessageListenerService {
 
     private static String queueName = "msg-queue.fifo";
-
+    private final TrackingService trackingService;
+    private final TrackingMapper trackingMapper;
 
     public void initConsumer() {
 
@@ -40,10 +49,20 @@ public class TrackingMessageListenerService {
             Session session = conn.createSession(false, Session.AUTO_ACKNOWLEDGE);
             Queue queue = session.createQueue(queueName);
             MessageConsumer consumer = session.createConsumer(queue);
-            consumer.setMessageListener(new TrackingMessageListener());
             conn.start();
-//            Thread.sleep(1000000);
-        } catch (JMSException e) {
+            Message message = consumer.receive();
+            System.out.println(((TextMessage) message).getText());
+            ObjectMapper mapper = new ObjectMapper();
+            TrackingDTO trackingDTO = mapper.readValue(((TextMessage) message).getText(), TrackingDTO.class);
+            trackingService.updateTracking(trackingMapper.mapDTOtoEntity(trackingDTO));
+            Thread.sleep(1000);
+        } catch (JMSException | InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (StreamReadException e) {
+            throw new RuntimeException(e);
+        } catch (DatabindException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
